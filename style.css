@@ -4,3 +4,13 @@
     border: none;
     text-decoration: none;
 }
+
+.board{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(50px, 200px));
+    grid-template-rows: repeat(3, minmax(50px, 200px));
+}
+
+.cell{
+    border: 1px solid black;
+}
