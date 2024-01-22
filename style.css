@@ -12,13 +12,13 @@ body{
     justify-content: center;
 }
 
-.board{
+#gameboard{
     display: grid;
     grid-template-columns: repeat(3, minmax(50px, 200px));
     grid-template-rows: repeat(3, minmax(50px, 200px));
 }
 
-.cell{
+.square{
     border: 1px solid black;
     display: flex;
     align-items: center;

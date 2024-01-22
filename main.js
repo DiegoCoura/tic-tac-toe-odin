@@ -1,39 +1,128 @@
-import { game } from "./components/game.js";
+const displayController = (() => {
+  const renderMessage = (message) => {
+    document.querySelector("#message").innerHTML = message;
+  };
+  return {
+    renderMessage,
+  };
+})();
 
-const mainContent = document.getElementById("main-content");
+const Gameboard = (() => {
+  let gameboard = ["", "", "", "", "", "", "", "", ""];
 
-let gameStatus = false;
+  const render = () => {
+    let boardHTML = "";
+    gameboard.forEach((square, index) => {
+      boardHTML += `<div class="square" id="square-${index}">${square}</div>`;
+    });
+    document.querySelector("#gameboard").innerHTML = boardHTML;
+    const squares = document.querySelectorAll(".square");
+    squares.forEach((square, index) => {
+      square.addEventListener("click", Game.handleClick);
+    });
+  };
 
-function removeChildNodes(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
+  const update = (index, value) => {
+    gameboard[index] = value;
+    render();
+  };
+
+  const getGameboard = () => gameboard;
+
+  return {
+    render,
+    update,
+    getGameboard,
+  };
+})();
+
+const createPlayer = (name, mark) => {
+  return {
+    name,
+    mark,
+  };
+};
+
+const Game = (() => {
+  let players = [];
+  let currentPlayerIndex;
+  let gameOver;
+
+  const start = () => {
+    players = [
+      createPlayer(document.querySelector("#player1").value, "X"),
+      createPlayer(document.querySelector("#player2").value, "O"),
+    ];    
+    currentPlayerIndex = 0;
+    gameOver = false;
+    Gameboard.render();
+  };
+
+  const restart = () => {
+    for (let i = 0; i < 9; i++) {
+      Gameboard.update(i, "");
+    }
+    displayController.renderMessage("")
+    Gameboard.render();
+    start();
+  };
+
+  const handleClick = (event) => {
+    if (gameOver) return;
+
+    let index = parseInt(event.target.id.split("-")[1]);
+
+    if (Gameboard.getGameboard()[index] !== "") return;
+
+    Gameboard.update(index, players[currentPlayerIndex].mark);
+
+    if (checkForWin(Gameboard.getGameboard())) {
+      gameOver = true;
+      displayController.renderMessage(`${players[currentPlayerIndex].name} wins`)
+    } else if (checkForTie(Gameboard.getGameboard())) {
+      gameOver = true;
+      displayController.renderMessage("It's a Tie!")
+    }
+    currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
+  };
+  return {
+    start,
+    restart,
+    handleClick,
+  };
+})();
+
+function checkForWin(board) {
+  const winningCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for (let i = 0; i < winningCombinations.length; i++) {
+    const [a, b, c] = winningCombinations[i];
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      return true;
+    }
   }
+  return false;
 }
 
-function playGame() {
-  gameStatus = true;
-  removeChildNodes(mainContent);
-  const showBoard = game();
+function checkForTie(board) {
+  return board.every((cell) => cell !== "");
 }
 
-function showMenu() {
+const restartBtn = document.querySelector("#restart-button");
+restartBtn.addEventListener("click", () => {
+  Game.restart();
+});
 
-  const menu = document.createElement("div");
-  menu.setAttribute("id", "menu");
-  const startBtn = document.createElement("button");
-  startBtn.classList.add("start-button");
-  startBtn.innerText = "Start";
-  startBtn.addEventListener("click", () => playGame());
-
-  menu.appendChild(startBtn);
-  mainContent.appendChild(menu);
-
-}
-
-if (gameStatus === false) {
-  showMenu();
-} else if (gameStatus === true) {
-  mainContent.removeChildNodes();
-  mainContent.appendChild(gameIsOn);
-  console.log("gameStatus true");
-}
+const startBtn = document.querySelector("#start-button");
+startBtn.addEventListener("click", () => {
+  Game.start();
+});
