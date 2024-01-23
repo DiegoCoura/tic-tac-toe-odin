@@ -1,26 +1,66 @@
+@font-face {
+    font-family: pixelFont;
+    src: url(public/joystix.otf);
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    border: none;
-    text-decoration: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  text-decoration: none;
+  font-family: pixelFont;
 }
 
-body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #96d5e3;;
+  padding: 20px;
+  gap: 20px;
 }
 
-#gameboard{
-    display: grid;
-    grid-template-columns: repeat(3, minmax(50px, 200px));
-    grid-template-rows: repeat(3, minmax(50px, 200px));
+.title {
+    color: #1f1f4f;
 }
 
-.square{
-    border: 1px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#gameboard {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(50px, 160px));
+  grid-template-rows: repeat(3, minmax(50px, 160px));
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: #bdcce7;
+  box-shadow: -7px 3px #3b3b71;
+  padding: 15px;
+  gap: 15px;
+}
+
+.square {
+  border: 2px solid #3b3b71;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: -4px 3px #3b3b71;
+  border-radius: 15px;
+}
+
+.controls-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.players-input {
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.game-btns {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 15px;
 }
