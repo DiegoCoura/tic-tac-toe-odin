@@ -1,11 +1,12 @@
-const displayController = (() => {
+const displayController = (()=>{
   const renderMessage = (message) => {
-    document.querySelector("#message").innerHTML = message;
-  };
+    document.querySelector("#message").innerText = message;
+  }
+
   return {
-    renderMessage,
-  };
-})();
+    renderMessage
+  }
+})() 
 
 const Gameboard = (() => {
   let gameboard = ["", "", "", "", "", "", "", "", ""];
@@ -17,17 +18,17 @@ const Gameboard = (() => {
     });
     document.querySelector("#gameboard").innerHTML = boardHTML;
     const squares = document.querySelectorAll(".square");
-    squares.forEach((square, index) => {
+    squares.forEach((square) => {
       square.addEventListener("click", Game.handleClick);
     });
   };
+
+  const getGameboard = () => gameboard;
 
   const update = (index, value) => {
     gameboard[index] = value;
     render();
   };
-
-  const getGameboard = () => gameboard;
 
   return {
     render,
@@ -52,9 +53,11 @@ const Game = (() => {
     players = [
       createPlayer(document.querySelector("#player1").value, "X"),
       createPlayer(document.querySelector("#player2").value, "O"),
-    ];    
+    ];
+
     currentPlayerIndex = 0;
     gameOver = false;
+
     Gameboard.render();
   };
 
@@ -62,29 +65,31 @@ const Game = (() => {
     for (let i = 0; i < 9; i++) {
       Gameboard.update(i, "");
     }
-    displayController.renderMessage("")
-    Gameboard.render();
-    start();
+    displayController.renderMessage("");
+    start()
   };
 
   const handleClick = (event) => {
-    if (gameOver) return;
+
+    if(gameOver) return;
 
     let index = parseInt(event.target.id.split("-")[1]);
 
     if (Gameboard.getGameboard()[index] !== "") return;
 
     Gameboard.update(index, players[currentPlayerIndex].mark);
-
-    if (checkForWin(Gameboard.getGameboard())) {
+    
+    if(checkForWin(Gameboard.getGameboard())){
+      displayController.renderMessage(`${players[currentPlayerIndex].name} wins!`)
       gameOver = true;
-      displayController.renderMessage(`${players[currentPlayerIndex].name} wins`)
-    } else if (checkForTie(Gameboard.getGameboard())) {
-      gameOver = true;
+    } else if (checkForTie(Gameboard.getGameboard())){      
       displayController.renderMessage("It's a Tie!")
+      gameOver = true;
     }
+
     currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
   };
+
   return {
     start,
     restart,
@@ -113,16 +118,16 @@ function checkForWin(board) {
   return false;
 }
 
-function checkForTie(board) {
-  return board.every((cell) => cell !== "");
+function checkForTie(board){
+  return board.every((cell) => cell !== "" )
 }
-
-const restartBtn = document.querySelector("#restart-button");
-restartBtn.addEventListener("click", () => {
-  Game.restart();
-});
 
 const startBtn = document.querySelector("#start-button");
 startBtn.addEventListener("click", () => {
   Game.start();
+});
+
+const restartBtn = document.querySelector("#restart-button");
+restartBtn.addEventListener("click", () => {
+  Game.restart();
 });
