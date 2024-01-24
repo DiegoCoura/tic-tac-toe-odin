@@ -17,18 +17,21 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #96d5e3;;
-  padding: 20px;
+  padding: 30px 0 0;
   gap: 20px;
 }
 
 .title {
     color: #1f1f4f;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 #gameboard {
   display: grid;
-  grid-template-columns: repeat(3, minmax(50px, 160px));
-  grid-template-rows: repeat(3, minmax(50px, 160px));
+  grid-template-columns: repeat(3, minmax(50px, 100px));
+  grid-template-rows: repeat(3, minmax(50px, 100px));
   border: 1px solid black;
   border-radius: 15px;
   background-color: #bdcce7;
@@ -44,6 +47,9 @@ body {
   justify-content: center;
   box-shadow: -4px 3px #3b3b71;
   border-radius: 15px;
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: -2px 1px black;
 }
 
 .controls-container {
@@ -54,13 +60,22 @@ body {
 
 .players-input {
     padding: 10px;
-    font-size: 20px;
+    font-size: 14px;
     text-align: center;
     border-radius: 15px;
 }
 
 .game-btns {
     padding: 10px 20px;
-    font-size: 20px;
+    font-size: 14px;
     border-radius: 15px;
+    background-color: #3b3b71;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.game-btns:hover{
+  transform: scale(1.1);
+  box-shadow: -7px 3px #323265;
 }
