@@ -11,10 +11,15 @@ const displayController = (() => {
 const Gameboard = (() => {
   let gameboard = ["", "", "", "", "", "", "", "", ""];
 
-  const render = () => {
+  const render = (lastMarkIndex) => {
     let boardHTML = "";
     gameboard.forEach((square, index) => {
-      boardHTML += `<div class="square" id="square-${index}">${square}</div>`;
+      if(lastMarkIndex === index){
+        boardHTML += `<div class="square" id="square-${index}"><span class="square__mark">${square}</span></div>`;
+      } else{
+        boardHTML += `<div class="square" id="square-${index}"><span>${square}</span></div>`;
+      }
+
     });
     document.querySelector("#gameboard").innerHTML = boardHTML;
     const squares = document.querySelectorAll(".square");
@@ -27,7 +32,7 @@ const Gameboard = (() => {
 
   const update = (index, value) => {
     gameboard[index] = value;
-    render();
+    render(index);
   };
 
   return {
