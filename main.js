@@ -1,12 +1,12 @@
-const displayController = (()=>{
+const displayController = (() => {
   const renderMessage = (message) => {
-    document.querySelector("#message").innerText = message;
-  }
+    document.querySelector(".title").innerText = message;
+  };
 
   return {
-    renderMessage
-  }
-})() 
+    renderMessage,
+  };
+})();
 
 const Gameboard = (() => {
   let gameboard = ["", "", "", "", "", "", "", "", ""];
@@ -50,9 +50,10 @@ const Game = (() => {
   let gameOver;
 
   const start = () => {
+    
     players = [
-      createPlayer(document.querySelector("#player1").value, "X"),
-      createPlayer(document.querySelector("#player2").value, "O"),
+      createPlayer(document.querySelector("#player1").value ? document.querySelector("#player1").value : "Player 1", "X"),
+      createPlayer(document.querySelector("#player2").value ? document.querySelector("#player2").value : "Player 2", "O"),
     ];
 
     currentPlayerIndex = 0;
@@ -65,25 +66,26 @@ const Game = (() => {
     for (let i = 0; i < 9; i++) {
       Gameboard.update(i, "");
     }
-    displayController.renderMessage("");
-    start()
+    displayController.renderMessage("TIC TAC TOE");
+    start();
   };
 
   const handleClick = (event) => {
-
-    if(gameOver) return;
+    if (gameOver) return;
 
     let index = parseInt(event.target.id.split("-")[1]);
 
     if (Gameboard.getGameboard()[index] !== "") return;
 
     Gameboard.update(index, players[currentPlayerIndex].mark);
-    
-    if(checkForWin(Gameboard.getGameboard())){
-      displayController.renderMessage(`${players[currentPlayerIndex].name} wins!`)
+
+    if (checkForWin(Gameboard.getGameboard())) {
+      displayController.renderMessage(
+        `${players[currentPlayerIndex].name} wins!`
+      );
       gameOver = true;
-    } else if (checkForTie(Gameboard.getGameboard())){      
-      displayController.renderMessage("It's a Tie!")
+    } else if (checkForTie(Gameboard.getGameboard())) {
+      displayController.renderMessage("It's a Tie!");
       gameOver = true;
     }
 
@@ -118,8 +120,8 @@ function checkForWin(board) {
   return false;
 }
 
-function checkForTie(board){
-  return board.every((cell) => cell !== "" )
+function checkForTie(board) {
+  return board.every((cell) => cell !== "");
 }
 
 const startBtn = document.querySelector("#start-button");
